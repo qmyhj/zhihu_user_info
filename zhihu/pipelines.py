@@ -9,43 +9,28 @@ import pymongo
 import pymysql
 import logging
 from twisted.enterprise import adbapi
-from scrapy.pipelines.images import ImagesPipeline
-from scrapy.exceptions import DropItem
-
-class MyImagePipeline(ImagesPipeline):
-    def get_media_requests(self, item, info):
-        for url in item['image_urls']:
-            yield scrapy.Request(url)
-
-    def item_completed(self, results, item, info):
-        image_path = [x['path'] for ok, x in results if ok]
-        if not image_path:
-            raise DropItem('item contains no images')
-        item['image_path'] = image_path
-        return item
 
 
+class MongoPipeline(object):
 
-class ZhihuPipeline(object):
-
-    def __init__(self, crawler):
-        self.mongo_uri = crawler.settings.get('MONGO_URI')
-        self.mongo_db = crawler.settings.get('MONGO_DB')
+    def __init__(self, settings):
+        self.mongo_host = settings.get('MONGO_HOST')
+        self.mongo_db = settings.get('MONGO_DB')
+        self.mongo_table = settings.get('MONGO_TABLE')
 
     @classmethod
-    def from_crawler(cls, crawler):
-        return cls(crawler)
+    def from_settings(cls, settings):
+        return cls(settings)
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(host=self.mongo_uri)
+        self.client = pymongo.MongoClient(host=self.mongo_host)
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
         self.client.close()
 
     def process_item(self, item, spider):
-        # self.db['user'].insert_one(dict(item))
-        self.db['user'].update({'url_token': item['url_token']}, {'$set': item}, True)
+        self.db[self.mongo_table].insert_one(dict(item))
         return item
 
 class MysqlPipeline(object):

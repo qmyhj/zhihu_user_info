@@ -9,8 +9,6 @@ import scrapy
 
 
 class ZhihuItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     id = scrapy.Field()
     name = scrapy.Field()
     type = scrapy.Field()
@@ -21,20 +19,8 @@ class ZhihuItem(scrapy.Item):
 
     def get_sql(self):
         sql = """
-        insert into info(id, name, type, url_token, answer_count, articles_count, gender) 
-        values(%s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO info(id, name, type, url_token, answer_count, articles_count, gender) 
+        VALUES(%s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE name=VALUES(name)
         """
         values = (self['id'], self['name'], self['type'], self['url_token'], self['answer_count'], self['articles_count'], self['gender'])
         return sql.strip(), values
-
-
-class DoubanItem(scrapy.Item):
-    image_urls = scrapy.Field()
-    image_path = scrapy.Field()
-
-
-class TaobaoItem(scrapy.Item):
-    title = scrapy.Field()
-    price = scrapy.Field()
-    week_sale = scrapy.Field()
-    shops_num = scrapy.Field()

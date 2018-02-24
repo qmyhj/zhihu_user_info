@@ -28,7 +28,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 0.5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -56,9 +56,8 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'scrapy.downloadermiddleware.useragent.UserAgentMiddleware': None,
    'zhihu.middlewares.RandomUserAgentMiddlewares': 543,
-   # 'zhihu.middlewares.TaobaoMiddleware': 50,
+   # 'zhihu.middlewares.HttpProxyMiddleware': 600,
 
 }
 
@@ -71,10 +70,10 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'zhihu.pipelines.ZhihuPipeline': 300,
+   # 'zhihu.pipelines.MongoPipeline': 300,
    # 'zhihu.pipelines.MysqlPipeline': 300,
    'zhihu.pipelines.MysqlTwistedPipeline': 300,
-   # 'zhihu.pipelines.MyImagePipeline': 300,
+   # 'scrapy_redis.pipelines.RedisPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -98,17 +97,22 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-IMAGES_STORE = os.path.join(BASE_URL, 'images')
-
-
-MONGO_URI = 'localhost'
-MONGO_DB = 'zhihu'
+PROXY_URL = 'http://127.0.0.1:5000/get'
+MONGO_HOST = ''
+MONGO_DB = ''
+MONGO_TABLE = ''
+"""配置爬取用户起点"""
+START_USER = 'houzichedan'
 
 PARAMS = {
     'host': 'localhost',
     'port': 3306,
     'user': 'root',
-    'password': '345210',
-    'db': 'zhihu_user',
+    'password': '',
+    'db': '',
     'charset': 'utf8'
 }
+
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+REDIS_URL = 'redis://user:pass@hostname:9001'
