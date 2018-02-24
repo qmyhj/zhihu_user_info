@@ -40,7 +40,7 @@ class MysqlPipeline(object):
 
     @classmethod
     def from_settings(cls, settings):
-        return cls(settings.get('PARAMS'))
+        return cls(settings.get('MYSQL_PARAMS'))
 
     def process_item(self, item, spider):
         # 建立mysql表时，一定要制定编码为utf8，否则后期插入会报错, windows下mysql默认使用latin字符集
@@ -56,7 +56,7 @@ class MysqlTwistedPipeline(object):
 
     @classmethod
     def from_settings(cls, settings):
-        return cls(settings.get('PARAMS'))
+        return cls(settings.get('MYSQL_PARAMS'))
 
     def process_item(self, item, spider):
         query = self.dbpool.runInteraction(self.insert, item)

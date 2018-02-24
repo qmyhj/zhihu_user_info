@@ -104,7 +104,7 @@ MONGO_TABLE = ''
 """配置爬取用户起点"""
 START_USER = 'houzichedan'
 
-PARAMS = {
+MYSQL_PARAMS = {
     'host': 'localhost',
     'port': 3306,
     'user': 'root',
