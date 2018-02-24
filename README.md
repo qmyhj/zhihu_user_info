@@ -1,2 +1,13 @@
 # zhihu_user_info
 基于scrapy_redis和ip代理池构建简单的分布式知乎用户爬虫
+
+1 本爬虫采取从某个用户出发，不断爬取关注列表和粉丝列表的方式爬取知乎用户信息，初始用户可在settings文件START_USER中配置
+
+2 本爬虫提供了mysql以及mongodb存储方式，只需要在settings文件中配置相应的参数，并将相应的item_pipeline打开即可,其中mysql存储提供了异步和非异步两种方式，只需选择相应的pipeline即可
+
+3 本爬虫采取了scrapy_redis分布式架构，只需要在settings文件中配置好REDIS_URL参数，其中scrapy_redis提供了相应的pipeline，可以选择是否打开，默认是关闭的
+
+4 本爬虫提供了免费的ip代理池，该代理池是由https://github.com/Germey/ProxyPool实现的，用户只需要在settings文件中打开HttpProxyMiddleware，然后运行run.即可
+
+5 配置好参数后，运行main.py即可启动爬虫
+
