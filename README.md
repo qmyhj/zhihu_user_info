@@ -7,7 +7,7 @@
 
 3 本爬虫采取了scrapy_redis分布式架构，只需要在settings文件中配置好REDIS_URL参数，其中scrapy_redis提供了相应的pipeline，可以选择是否打开，默认是关闭的
 
-4 本爬虫提供了免费的ip代理池，该代理池是由https://github.com/Germey/ProxyPool实现的，用户只需要在settings文件中打开HttpProxyMiddleware，然后运行run.即可
+4 本爬虫提供了免费的ip代理池，该代理池是由https://github.com/Germey/ProxyPool实现的，用户只需要在settings文件中打开HttpProxyMiddleware，然后运行run.py即可
 
 5 配置好参数后，运行main.py即可启动爬虫
 
